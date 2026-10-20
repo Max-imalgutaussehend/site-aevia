@@ -1,0 +1,31 @@
+
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">Stack</h1>
+    <p class="post-description">The components Aevia is made of, and the reason each one is there.</p>
+  </header>
+
+  <div class="aevia-table aevia-stack">
+    <table>
+      <thead><tr><th>Component</th><th>Role</th><th>Why this one</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">OpenTofu</th><td>Server, firewall, DNS, tunnel, buckets</td><td>Infrastructure is reviewed as a plan before anything changes; the open-source fork keeps the licence simple.</td></tr>
+        <tr><th scope="row">k3s</th><td>Kubernetes on one node</td><td>Small enough for a single server, and a real cluster API for everything that follows.</td></tr>
+        <tr><th scope="row">Cilium</th><td>Networking and isolation</td><td>Default-deny between namespaces, and flow visibility with Hubble.</td></tr>
+        <tr><th scope="row">Argo CD</th><td>GitOps delivery</td><td>The cluster pulls the desired state, so a push is the deploy and drift heals itself.</td></tr>
+        <tr><th scope="row">SOPS and age</th><td>Secrets in Git</td><td>Encrypted at rest in the repository, decrypted only inside the cluster.</td></tr>
+        <tr><th scope="row">Cloudflare Tunnel and Access</th><td>Public edge and sign-in</td><td>No inbound web port on the server; private tools are behind a login.</td></tr>
+        <tr><th scope="row">Authentik</th><td>Single sign-on</td><td>One identity for Cloudflare Access, Grafana and Argo CD, with passkeys.</td></tr>
+        <tr><th scope="row">Traefik</th><td>Ingress</td><td>Routes by hostname; the tunnel is its only caller.</td></tr>
+        <tr><th scope="row">PostgreSQL, Redis, NATS</th><td>Data layer</td><td>The three things the applications actually need, with strict network rules around them.</td></tr>
+        <tr><th scope="row">SeaweedFS</th><td>S3-compatible storage</td><td>Buckets with one identity each, so an app or an agent only sees its own.</td></tr>
+        <tr><th scope="row">Prometheus, Grafana, Loki, Tempo</th><td>Metrics, dashboards, logs, traces</td><td>The standard open stack, sized to leave room on one node.</td></tr>
+        <tr><th scope="row">FreeLLMAPI</th><td>AI gateway</td><td>One endpoint that speaks both the OpenAI and the Anthropic format over a pool of free model keys.</td></tr>
+        <tr><th scope="row">Herdr</th><td>Agent workspace</td><td>A terminal multiplexer where coding agents keep running after I disconnect.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="aevia-more">Every row has a decision record in the repository:
+  <a href="https://github.com/Max-imalgutaussehend/life-server/tree/r2/docs/adr" target="_blank" rel="noopener">docs/adr</a>.</p>
+</div>

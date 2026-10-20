@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="aevia">
+  <defs>
+    <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6eb28b"/>
+      <stop offset="1" stop-color="#3fa7c4"/>
+    </linearGradient>
+  </defs>
+  <!-- the cluster: a hexagon -->
+  <path d="M32 5 L55 18.5 V45.5 L32 59 L9 45.5 V18.5 Z" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- the A: two legs meeting at the node, one guarded crossbar -->
+  <path d="M21 44 L32 21 L43 44" fill="none" stroke="url(#g)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26.2 36 H37.8" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="32" cy="21" r="3.6" fill="url(#g)"/>
+</svg>

@@ -1,0 +1,41 @@
+
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">Aevia</h1>
+    <p class="post-description">A personal platform on one server, built so that it can be rebuilt from Git.</p>
+  </header>
+
+  <p>Aevia runs my own services: workflow automation, monitoring, notifications, an AI gateway and a workspace for
+  coding agents. It all lives on a single Hetzner server. Nothing is clicked together: OpenTofu creates the server,
+  the firewall and the DNS records, k3s runs the workloads, and Argo CD applies whatever the repository says.
+  If the server disappeared, the repository and one offline key would bring it back.</p>
+
+  <h2 class="aevia-h">Principles</h2>
+  <ul class="aevia-list">
+    <li><strong>Git is the only source of truth.</strong> A push to the branch is the deploy; the cluster pulls, nobody pushes into it.</li>
+    <li><strong>Deny first.</strong> Every namespace starts with no network access. Each connection that exists is written down and tested.</li>
+    <li><strong>Agents stay in their lane.</strong> Code that models write runs in its own namespace. It can reach the AI gateway and one storage bucket, and nothing else inside the cluster. A test in CI proves it cannot reach the databases.</li>
+    <li><strong>Secrets are encrypted in Git.</strong> SOPS and age; the cluster holds its own key, and I hold a copy offline.</li>
+    <li><strong>One login.</strong> Cloudflare Access and Authentik sit in front of every private tool, with a one-time PIN as the way back in.</li>
+    <li><strong>Restores are rehearsed.</strong> A database dump is destroyed and restored on every CI run, not only when something breaks.</li>
+  </ul>
+
+  <h2 class="aevia-h">At a glance</h2>
+  <div class="aevia-table">
+    <table>
+      <tbody>
+        <tr><th scope="row">Server</th><td>One Hetzner node, 4 vCPU and 8 GB, in Helsinki</td></tr>
+        <tr><th scope="row">Kubernetes</th><td>k3s with Cilium (no kube-proxy, no bundled ingress)</td></tr>
+        <tr><th scope="row">Delivery</th><td>Argo CD, every service is an application; manifests are generated from one service catalog</td></tr>
+        <tr><th scope="row">Edge</th><td>Cloudflare Tunnel (outbound only, no open web port) with Access and Authentik for sign-in</td></tr>
+        <tr><th scope="row">Data</th><td>PostgreSQL, Redis, NATS and an S3-compatible store (SeaweedFS)</td></tr>
+        <tr><th scope="row">Observability</th><td>Prometheus, Grafana, Loki, Tempo and an OpenTelemetry collector</td></tr>
+        <tr><th scope="row">Backups</th><td>Nightly, encrypted on the server before they leave it, stored in a separate Hetzner bucket</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="aevia-more">See <a href="architecture/index.html">how a request travels</a> and
+  <a href="stack/index.html">what each component is for</a>. The source is on
+  <a href="https://github.com/Max-imalgutaussehend/life-server/tree/r2" target="_blank" rel="noopener">GitHub</a>.</p>
+</div>

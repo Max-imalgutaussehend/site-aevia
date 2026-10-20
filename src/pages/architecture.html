@@ -1,0 +1,56 @@
+
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">Architecture</h1>
+    <p class="post-description">How a request travels, and what is kept apart from what.</p>
+  </header>
+
+  <div class="aevia-figure">
+    <svg viewBox="0 0 760 360" role="img" aria-label="Request path from a visitor through Cloudflare and the tunnel into the cluster, with the zones apps, platform, agents and data" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+        <rect x="10" y="150" width="96" height="46" rx="6"/>
+        <rect x="140" y="150" width="130" height="46" rx="6"/>
+        <rect x="300" y="20" width="446" height="320" rx="10" stroke-dasharray="5 4"/>
+        <rect x="320" y="150" width="96" height="46" rx="6"/>
+        <rect x="436" y="44" width="164" height="50" rx="6"/>
+        <rect x="436" y="118" width="164" height="50" rx="6"/>
+        <rect x="436" y="192" width="164" height="50" rx="6"/>
+        <rect x="624" y="118" width="112" height="124" rx="6"/>
+        <rect x="320" y="266" width="260" height="50" rx="6"/>
+        <path d="M106 173 H140 M270 173 H320 M416 173 L436 69 M416 173 H436 M416 173 L436 217 M600 69 L624 150 M600 143 H624 M600 217 L624 200 M580 291 H610 L624 242"/>
+      </g>
+      <g fill="currentColor" font-family="inherit" font-size="13" text-anchor="middle">
+        <text x="58" y="177">Visitor</text>
+        <text x="205" y="169">Cloudflare</text><text x="205" y="186" font-size="11" opacity=".75">DNS · Access · Tunnel</text>
+        <text x="368" y="169">Traefik</text><text x="368" y="186" font-size="11" opacity=".75">ingress</text>
+        <text x="518" y="64">apps</text><text x="518" y="82" font-size="11" opacity=".75">n8n, this site</text>
+        <text x="518" y="138">platform</text><text x="518" y="156" font-size="11" opacity=".75">status, ntfy, SSO, gateway</text>
+        <text x="518" y="212">agents</text><text x="518" y="230" font-size="11" opacity=".75">workspace, no database access</text>
+        <text x="680" y="166">data</text><text x="680" y="184" font-size="11" opacity=".75">PostgreSQL</text><text x="680" y="200" font-size="11" opacity=".75">Redis · NATS · S3</text>
+        <text x="450" y="287">Argo CD · Prometheus · Grafana</text><text x="450" y="304" font-size="11" opacity=".75">operators only, same login</text>
+        <text x="523" y="14" font-size="11" opacity=".75">k3s on one Hetzner server</text>
+      </g>
+    </svg>
+  </div>
+
+  <h2 class="aevia-h">The path of a request</h2>
+  <p>A visitor reaches Cloudflare, which terminates TLS and, for private hosts, asks for a login first. The server has no
+  open web port: a small agent inside the cluster holds an outbound tunnel to Cloudflare, and requests come in through it
+  to Traefik, which routes by hostname to the right service.</p>
+
+  <h2 class="aevia-h">What is kept apart</h2>
+  <p>Namespaces are the unit of isolation, and every one begins with a policy that denies all traffic. Allowed paths are
+  added one at a time. Applications may use the databases they need. Agents may call the AI gateway and a single
+  storage bucket, and the databases are out of reach for them. A test starts a throwaway cluster with the same network
+  rules and fails the build if an agent can open a connection to PostgreSQL.</p>
+
+  <h2 class="aevia-h">Secrets and sign-in</h2>
+  <p>Secrets are committed encrypted. Argo CD decrypts them inside the cluster with its own key, so the plain values never
+  exist in Git or on a laptop that does not hold the key. Sign-in is layered: Cloudflare Access in front, Authentik as the
+  identity provider behind it, and the tool's own login last. Grafana and Argo CD accept Authentik directly.</p>
+
+  <h2 class="aevia-h">Failure and recovery</h2>
+  <p>Databases are dumped every night, encrypted before they leave the server, and copied to a separate Hetzner bucket.
+  A CI job drops a database, restores it from such a dump and checks that a test row survived. The server itself
+  is replaceable: the repository describes it, and the offline key opens the secrets.</p>
+</div>

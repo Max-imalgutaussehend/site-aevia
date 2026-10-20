@@ -1,0 +1,12 @@
+/* Aevia pages: small additions to the al-folio theme (appended to assets/css/custom.css by build.py) */
+.aevia-h{margin-top:2rem;font-size:1.25rem}
+.aevia-list{padding-left:1.1rem}
+.aevia-list li{margin-bottom:.55rem}
+.aevia-table{overflow-x:auto;margin:1rem 0}
+.aevia-table table{border-collapse:collapse;width:100%;font-size:.95rem}
+.aevia-table th,.aevia-table td{border-bottom:1px solid rgba(128,128,128,.28);padding:.55rem .7rem;text-align:left;vertical-align:top}
+.aevia-table th[scope=row]{white-space:nowrap;font-weight:600;width:1%}
+.aevia-table thead th{font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;opacity:.75}
+.aevia-figure{margin:1.2rem 0 1.6rem;overflow-x:auto}
+.aevia-figure svg{min-width:640px;width:100%;height:auto;color:inherit}
+.aevia-more{margin-top:1.6rem}
