@@ -21,7 +21,7 @@ def nav(active, root):
         cls = " active" if slug == active else ""
         cur = ' <span class="sr-only">(current)</span>' if slug == active else ""
         items.append(f'<li class="nav-item{cls}"> <a class="nav-link" href="{href}">{label}{cur}</a> </li>')
-    items.append('<li class="nav-item"> <a class="nav-link" href="https://github.com/Max-imalgutaussehend/life-server/tree/r2" '
+    items.append('<li class="nav-item"> <a class="nav-link" href="https://github.com/Max-imalgutaussehend/aevia" '
                  'target="_blank" rel="noopener">GitHub</a> </li>')
     return " ".join(items)
 
